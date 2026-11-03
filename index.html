@@ -119,6 +119,27 @@
 
       <section class="view" id="view-practice">
         <div class="page-heading"><div><div class="eyebrow">APPRENDRE EN PRATIQUANT</div><h1>Entraînement<span class="title-dot">.</span></h1><p class="page-intro">Teste tes connaissances avec des activités construites à partir de tes cours.</p></div></div>
+        <article class="ai-workbench panel">
+          <div class="ai-workbench-head">
+            <div><span class="eyebrow">RÉVÉO IA · PREMIÈRE VERSION</span><h2>Transforme ton cours en outil de révision.</h2><p>Colle le texte de ton cours : l'IA peut créer une fiche, un résumé, un quiz ou des flashcards.</p></div>
+            <span class="ai-pill">IA · BÊTA</span>
+          </div>
+          <form id="aiGenerateForm" class="ai-form">
+            <div class="ai-fields">
+              <div><label for="aiTitle">Nom du cours</label><input id="aiTitle" maxlength="100" placeholder="Ex. La Première Guerre mondiale"></div>
+              <div><label for="aiSubject">Matière</label><select id="aiSubject"><option>Histoire-géographie</option><option>Mathématiques</option><option>Français</option><option>Physique-chimie</option><option>SVT</option><option>Anglais</option><option>Philosophie</option><option>SES</option><option>Autre</option></select></div>
+              <div><label for="aiTask">Type de révision</label><select id="aiTask"><option value="fiche">Fiche de révision</option><option value="resume">Résumé clair</option><option value="quiz">Quiz avec corrigé</option><option value="flashcards">10 flashcards</option></select></div>
+            </div>
+            <label for="aiCourseContent">Contenu de ton cours</label>
+            <textarea id="aiCourseContent" required minlength="80" maxlength="12000" rows="8" placeholder="Colle ici le texte de ton cours (au moins 80 caractères)…"></textarea>
+            <div class="ai-form-footer"><span>Limite : 12 000 caractères · 5 générations par jour et par compte</span><button class="button button-primary" id="aiGenerateButton" type="submit">Générer avec Révéo IA →</button></div>
+          </form>
+          <div class="ai-status" id="aiStatus" role="status" aria-live="polite"></div>
+          <div class="ai-result" id="aiResult" hidden>
+            <div class="ai-result-head"><h3>Ton support de révision</h3><button type="button" class="button button-outline" id="aiCopyButton">Copier le résultat</button></div>
+            <pre id="aiResultText"></pre>
+          </div>
+        </article>
         <div class="practice-grid">
           <article class="practice-card practice-card-active"><div class="practice-symbol lavender">▣</div><span class="card-label">MÉMORISATION</span><h3>Flashcards</h3><p>Crée tes cartes question-réponse et révise-les à ton rythme.</p><span class="coming-soon available-label">Disponible</span></article>
           <article class="practice-card"><div class="practice-symbol peach">✳</div><span class="card-label">ENTRAÎNEMENT</span><h3>Quiz intelligents</h3><p>Des questions construites à partir de tes cours, avec correction expliquée.</p><span class="coming-soon">En préparation</span></article>
