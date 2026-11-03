@@ -15,6 +15,7 @@
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="https://open-lab-1.github.io/aide-scolaire/">
   <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -119,11 +120,14 @@
       <section class="view" id="view-practice">
         <div class="page-heading"><div><div class="eyebrow">APPRENDRE EN PRATIQUANT</div><h1>Entraînement<span class="title-dot">.</span></h1><p class="page-intro">Teste tes connaissances avec des activités construites à partir de tes cours.</p></div></div>
         <div class="practice-grid">
-          <article class="practice-card"><div class="practice-symbol lavender">▣</div><span class="card-label">MÉMORISATION</span><h3>Flashcards</h3><p>Apprends les définitions et les notions importantes avec des cartes question-réponse.</p><span class="coming-soon">Bientôt disponible</span></article>
-          <article class="practice-card"><div class="practice-symbol peach">✳</div><span class="card-label">ENTRAÎNEMENT</span><h3>Quiz intelligents</h3><p>Entraîne-toi et repère les notions qui méritent une nouvelle explication.</p><span class="coming-soon">Bientôt disponible</span></article>
-          <article class="practice-card"><div class="practice-symbol mint">⌁</div><span class="card-label">VISUALISATION</span><h3>Cartes mentales</h3><p>Visualise les liens entre les idées et retrouve la structure de ton cours.</p><span class="coming-soon">Bientôt disponible</span></article>
-          <article class="practice-card"><div class="practice-symbol blue">▤</div><span class="card-label">SYNTHÈSE</span><h3>Fiches PDF</h3><p>Retrouve les définitions, dates, formules et informations essentielles.</p><span class="coming-soon">Bientôt disponible</span></article>
+          <article class="practice-card practice-card-active"><div class="practice-symbol lavender">▣</div><span class="card-label">MÉMORISATION</span><h3>Flashcards</h3><p>Crée tes cartes question-réponse et révise-les à ton rythme.</p><span class="coming-soon available-label">Disponible</span></article>
+          <article class="practice-card"><div class="practice-symbol peach">✳</div><span class="card-label">ENTRAÎNEMENT</span><h3>Quiz intelligents</h3><p>Des questions construites à partir de tes cours, avec correction expliquée.</p><span class="coming-soon">En préparation</span></article>
+          <article class="practice-card"><div class="practice-symbol mint">⌁</div><span class="card-label">VISUALISATION</span><h3>Cartes mentales</h3><p>Visualise les liens entre les idées et retrouve la structure de ton cours.</p><span class="coming-soon">En préparation</span></article>
+          <article class="practice-card"><div class="practice-symbol blue">▤</div><span class="card-label">SYNTHÈSE</span><h3>Fiches PDF</h3><p>Retrouve les définitions, dates, formules et informations essentielles.</p><span class="coming-soon">En préparation</span></article>
         </div>
+        <div class="flashcard-toolbar"><div><h2>Mes flashcards</h2><p id="flashcardCount">0 carte</p></div><button class="button button-primary" id="addFlashcardButton">＋ Créer une carte</button></div>
+        <div class="flashcard-study panel" id="flashcardStudy"></div>
+        <div class="flashcard-grid" id="flashcardGrid"></div>
       </section>
 
       <section class="view" id="view-progress">
@@ -163,6 +167,17 @@
     </div>
   </div>
   <div class="modal-backdrop" id="accountModal" aria-hidden="true"><div class="modal account-modal" role="dialog" aria-modal="true" aria-labelledby="accountTitle"><div class="modal-header"><div><span class="eyebrow">TON ESPACE PERSONNEL</span><h2 id="accountTitle">Content de te retrouver.</h2><p class="modal-subtitle" id="accountSubtitle">Connecte-toi pour retrouver tes cours et ton planning.</p></div><button class="close-button" data-close aria-label="Fermer">×</button></div><div class="auth-tabs"><button type="button" class="auth-tab active" data-auth-mode="signin">Connexion</button><button type="button" class="auth-tab" data-auth-mode="signup">Créer un compte</button></div><form id="accountForm"><label for="accountEmail">Adresse e-mail</label><input id="accountEmail" type="email" autocomplete="email" required maxlength="254" placeholder="toi@exemple.fr"><label for="accountPassword">Mot de passe</label><input id="accountPassword" type="password" autocomplete="current-password" required minlength="8" placeholder="8 caractères minimum"><div class="auth-message" id="authMessage" aria-live="polite"></div><div class="modal-actions"><button type="button" class="button button-outline" data-close>Plus tard</button><button type="submit" class="button button-primary" id="authSubmit">Me connecter</button></div></form><p class="privacy-note">Nous ne demandons que les informations nécessaires au compte. N’utilise pas le mot de passe de ta messagerie.</p></div></div>
+  <div class="modal-backdrop" id="flashcardModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="flashcardModalTitle">
+      <div class="modal-header"><div><span class="eyebrow">MÉMORISATION</span><h2 id="flashcardModalTitle">Créer une flashcard</h2><p class="modal-subtitle">Une question devant, la réponse derrière.</p></div><button class="close-button" data-close aria-label="Fermer">×</button></div>
+      <form id="flashcardForm">
+        <label for="flashcardCourse">Associer à un cours (facultatif)</label><select id="flashcardCourse"><option value="">Sans cours associé</option></select>
+        <label for="flashcardQuestion">Question / notion à retenir</label><textarea id="flashcardQuestion" required maxlength="1000" rows="3" placeholder="Ex. Qu'est-ce que le numéro atomique ?"></textarea>
+        <label for="flashcardAnswer">Réponse</label><textarea id="flashcardAnswer" required maxlength="2000" rows="4" placeholder="Écris une réponse claire et précise…"></textarea>
+        <div class="modal-actions"><button type="button" class="button button-outline" data-close>Annuler</button><button type="submit" class="button button-primary">Enregistrer la carte</button></div>
+      </form>
+    </div>
+  </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./js/supabase.js"></script><script src="./js/app.js"></script>
 </body>
