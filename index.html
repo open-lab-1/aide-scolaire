@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f8fc">
+  <meta name="description" content="Ton espace intelligent pour organiser tes cours et préparer tes examens.">
+  <title>Aide Scolaire — Ton espace de révision</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="Accueil Aide Scolaire">
+        <span class="brand-mark">a.</span>
+        <span class="brand-name">aide<span>scolaire</span></span>
+      </a>
+      <div class="workspace-label">ESPACE PERSONNEL</div>
+      <nav class="main-nav" aria-label="Navigation principale">
+        <button class="nav-link active" data-view="dashboard"><span class="nav-icon">⌂</span>Vue d'ensemble</button>
+        <button class="nav-link" data-view="courses"><span class="nav-icon">▤</span>Mes cours<span class="nav-count" id="courseCount">0</span></button>
+        <button class="nav-link" data-view="planner"><span class="nav-icon">▦</span>Planning</button>
+        <button class="nav-link" data-view="practice"><span class="nav-icon">✳</span>Entraînement</button>
+        <button class="nav-link" data-view="progress"><span class="nav-icon">↗</span>Ma progression</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="sidebar-tip">
+          <div class="tip-symbol">✦</div>
+          <strong>Un petit pas chaque jour.</strong>
+          <p>Des séances courtes et régulières aident à mieux retenir.</p>
+        </div>
+        <div class="profile-row">
+          <div class="avatar">É</div>
+          <div><strong>Mon espace</strong><span>Mode aperçu</span></div>
+          <span class="profile-dots">···</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Ouvrir le menu">☰</button>
+        <div class="breadcrumb">Mon espace <span>/</span> <strong id="breadcrumbCurrent">Vue d'ensemble</strong></div>
+        <div class="top-actions">
+          <span class="connection-pill"><i></i> Prototype local</span>
+          <button class="icon-button" id="helpButton" aria-label="Informations">?</button>
+          <div class="avatar small-avatar">É</div>
+        </div>
+      </header>
+
+      <section class="view active-view" id="view-dashboard">
+        <div class="welcome-row">
+          <div>
+            <div class="eyebrow">MARDI 3 NOVEMBRE 2026</div>
+            <h1>On avance à ton rythme<span class="title-dot">.</span></h1>
+            <p class="page-intro">Retrouve tes cours, prépare tes contrôles et organise tes prochaines révisions.</p>
+          </div>
+          <button class="button button-primary" data-open="courseModal"><span>＋</span> Ajouter un cours</button>
+        </div>
+
+        <div class="hero-card">
+          <div class="hero-copy">
+            <span class="hero-kicker">TON ESPACE DE RÉVISION</span>
+            <h2>Chaque cours peut<br>devenir plus clair.</h2>
+            <p>Ajoute un document pour préparer tes futures fiches, cartes mentales et séances d'entraînement.</p>
+            <button class="button button-light" data-open="courseModal">Importer mon premier cours <span>→</span></button>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+            <div class="floating-note note-one"><span class="note-line wide"></span><span class="note-line"></span><span class="note-line short"></span></div>
+            <div class="floating-note note-two"><span class="mini-star">✳</span><b>À retenir</b><span class="note-line"></span></div>
+            <div class="central-orb"><span>✦</span></div>
+          </div>
+        </div>
+
+        <div class="section-heading">
+          <div><h2>Ton tableau de bord</h2><p>Les informations essentielles de ton espace.</p></div>
+          <span class="subtle-label">APERÇU</span>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span>Cours ajoutés</span><span class="stat-icon lavender">▤</span></div><strong id="statCourses">0</strong><small>Documents dans ton espace</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Prochains examens</span><span class="stat-icon peach">▦</span></div><strong id="statExams">0</strong><small>Dates à préparer</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Séances effectuées</span><span class="stat-icon mint">✓</span></div><strong>0</strong><small>Ton suivi commencera ici</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Notions maîtrisées</span><span class="stat-icon blue">✳</span></div><strong>—</strong><small>Disponible après tes entraînements</small></article>
+        </div>
+
+        <div class="lower-grid">
+          <article class="panel next-panel">
+            <div class="panel-heading"><div><h3>Prochaines échéances</h3><p>Garde un œil sur tes contrôles.</p></div><button class="text-button" data-view="planner">Voir le planning →</button></div>
+            <div id="examPreview" class="empty-state compact-empty"><div class="empty-icon">▦</div><strong>Aucun examen programmé</strong><p>Ajoute une date pour commencer à organiser tes révisions.</p><button class="button button-outline" data-open="examModal">Ajouter un examen</button></div>
+          </article>
+          <article class="panel focus-panel">
+            <div class="panel-heading"><div><h3>À faire aujourd'hui</h3><p>Un programme qui s'adaptera à toi.</p></div><span class="today-tag">AUJOURD'HUI</span></div>
+            <div class="focus-empty"><div class="focus-check">✓</div><div><strong>Ton espace est prêt</strong><p>Ajoute un cours et une date de contrôle pour préparer ton programme.</p></div></div>
+          </article>
+        </div>
+        <div class="notice"><span>ⓘ</span><p><strong>Version de démarrage :</strong> cette interface est déjà interactive, mais la connexion Supabase et la génération par IA seront ajoutées dans les prochaines étapes.</p></div>
+      </section>
+
+      <section class="view" id="view-courses">
+        <div class="page-heading"><div><div class="eyebrow">TA BIBLIOTHÈQUE</div><h1>Mes cours<span class="title-dot">.</span></h1><p class="page-intro">Centralise tes documents et retrouve-les facilement.</p></div><button class="button button-primary" data-open="courseModal">＋ Ajouter un cours</button></div>
+        <div class="toolbar"><div class="search-box"><span>⌕</span><input id="courseSearch" type="search" placeholder="Rechercher un cours..."></div><span class="result-count" id="courseResultCount">0 cours</span></div>
+        <div class="course-grid" id="courseGrid"><div class="empty-state wide-empty"><div class="empty-icon">▤</div><strong>Ta bibliothèque est encore vide</strong><p>Ajoute ton premier cours pour commencer à construire tes supports de révision.</p><button class="button button-primary" data-open="courseModal">Importer un cours</button></div></div>
+      </section>
+
+      <section class="view" id="view-planner">
+        <div class="page-heading"><div><div class="eyebrow">ANTICIPE SANS STRESS</div><h1>Mon planning<span class="title-dot">.</span></h1><p class="page-intro">Rassemble tes examens et prépare tes prochaines séances.</p></div><button class="button button-primary" data-open="examModal">＋ Ajouter un examen</button></div>
+        <div class="planner-banner"><div><span class="hero-kicker">TON ORGANISATION</span><h2>Un planning réaliste,<br>à ton rythme.</h2><p>Les séances personnalisées seront calculées à partir de tes cours, de tes disponibilités et de tes résultats aux quiz.</p></div><div class="calendar-art">▦<span>✦</span></div></div>
+        <div class="section-heading"><div><h2>Mes examens</h2><p>Les prochaines dates à retenir.</p></div></div>
+        <div id="examList" class="exam-list"><div class="empty-state"><div class="empty-icon">▦</div><strong>Aucune date pour le moment</strong><p>Ajoute ton prochain contrôle pour le faire apparaître ici.</p></div></div>
+      </section>
+
+      <section class="view" id="view-practice">
+        <div class="page-heading"><div><div class="eyebrow">APPRENDRE EN PRATIQUANT</div><h1>Entraînement<span class="title-dot">.</span></h1><p class="page-intro">Teste tes connaissances avec des activités construites à partir de tes cours.</p></div></div>
+        <div class="practice-grid">
+          <article class="practice-card"><div class="practice-symbol lavender">▣</div><span class="card-label">MÉMORISATION</span><h3>Flashcards</h3><p>Apprends les définitions et les notions importantes avec des cartes question-réponse.</p><span class="coming-soon">Bientôt disponible</span></article>
+          <article class="practice-card"><div class="practice-symbol peach">✳</div><span class="card-label">ENTRAÎNEMENT</span><h3>Quiz intelligents</h3><p>Entraîne-toi et repère les notions qui méritent une nouvelle explication.</p><span class="coming-soon">Bientôt disponible</span></article>
+          <article class="practice-card"><div class="practice-symbol mint">⌁</div><span class="card-label">VISUALISATION</span><h3>Cartes mentales</h3><p>Visualise les liens entre les idées et retrouve la structure de ton cours.</p><span class="coming-soon">Bientôt disponible</span></article>
+          <article class="practice-card"><div class="practice-symbol blue">▤</div><span class="card-label">SYNTHÈSE</span><h3>Fiches PDF</h3><p>Retrouve les définitions, dates, formules et informations essentielles.</p><span class="coming-soon">Bientôt disponible</span></article>
+        </div>
+      </section>
+
+      <section class="view" id="view-progress">
+        <div class="page-heading"><div><div class="eyebrow">TES EFFORTS COMPTENT</div><h1>Ma progression<span class="title-dot">.</span></h1><p class="page-intro">Visualise ce que tu apprends et les notions à retravailler.</p></div></div>
+        <div class="progress-placeholder panel"><div class="progress-illustration">↗</div><h2>Ta progression se construit ici.</h2><p>Après tes premiers quiz et flashcards, tu retrouveras tes résultats, tes points forts et les notions à revoir.</p><button class="button button-outline" data-view="courses">Voir mes cours</button></div>
+      </section>
+
+      <footer class="app-footer"><span>© 2026 Aide Scolaire</span><span>Conçu pour apprendre à son rythme.</span></footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="courseModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="courseModalTitle">
+      <div class="modal-header"><div><span class="eyebrow">NOUVEAU DOCUMENT</span><h2 id="courseModalTitle">Ajouter un cours</h2></div><button class="close-button" data-close aria-label="Fermer">×</button></div>
+      <form id="courseForm">
+        <label for="courseTitle">Nom du cours</label><input id="courseTitle" name="title" required maxlength="80" placeholder="Ex. Les fonctions — Mathématiques">
+        <label for="courseSubject">Matière</label><select id="courseSubject" name="subject" required><option value="">Choisir une matière</option><option>Mathématiques</option><option>Français</option><option>Histoire-géographie</option><option>Physique-chimie</option><option>SVT</option><option>Anglais</option><option>Philosophie</option><option>SES</option><option>Spécialité</option><option>Autre</option></select>
+        <label>Document du cours</label><label class="upload-zone" for="courseFile"><span class="upload-icon">↑</span><strong>Choisir un fichier</strong><span>PDF, image ou document texte · 20 Mo maximum</span><input id="courseFile" type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.txt,.doc,.docx" required></label>
+        <div class="selected-file" id="selectedFile" hidden></div>
+        <div class="form-note">Pour l'instant, le fichier est uniquement sélectionné dans cette démonstration. Il ne sera pas envoyé sur un serveur.</div>
+        <div class="modal-actions"><button type="button" class="button button-outline" data-close>Annuler</button><button type="submit" class="button button-primary">Ajouter à mes cours</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="examModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="examModalTitle">
+      <div class="modal-header"><div><span class="eyebrow">NOUVELLE ÉCHÉANCE</span><h2 id="examModalTitle">Ajouter un examen</h2></div><button class="close-button" data-close aria-label="Fermer">×</button></div>
+      <form id="examForm">
+        <label for="examTitle">Nom du contrôle</label><input id="examTitle" required maxlength="80" placeholder="Ex. Contrôle sur les fonctions">
+        <label for="examSubject">Matière</label><select id="examSubject" required><option value="">Choisir une matière</option><option>Mathématiques</option><option>Français</option><option>Histoire-géographie</option><option>Physique-chimie</option><option>SVT</option><option>Anglais</option><option>Philosophie</option><option>SES</option><option>Spécialité</option><option>Autre</option></select>
+        <label for="examDate">Date de l'examen</label><input id="examDate" type="date" required>
+        <label for="examDuration">Temps disponible par jour</label><select id="examDuration"><option value="15">15 minutes</option><option value="30" selected>30 minutes</option><option value="45">45 minutes</option><option value="60">1 heure</option></select>
+        <div class="form-note">La date sera ajoutée à ton planning. Le calcul automatique des séances arrivera avec le moteur de révision.</div>
+        <div class="modal-actions"><button type="button" class="button button-outline" data-close>Annuler</button><button type="submit" class="button button-primary">Ajouter l'examen</button></div>
+      </form>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="./js/app.js"></script>
+</body>
+</html>
