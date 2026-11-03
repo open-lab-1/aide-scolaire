@@ -1,6 +1,6 @@
-# Aide Scolaire
+# Révéo
 
-Application web responsive de révision scolaire. Dépôt indépendant du projet L'Atelier de Noël 3D.
+Application web responsive de révision scolaire — « Révise mieux. Réussis autrement. » Dépôt indépendant du projet L'Atelier de Noël 3D.
 
 ## Fonctionnalités actuellement intégrées
 
