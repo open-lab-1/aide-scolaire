@@ -1,0 +1,10 @@
+{
+  "name": "Aide Scolaire",
+  "short_name": "Aide Scolaire",
+  "description": "Ton espace intelligent pour organiser tes cours et préparer tes examens.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f7f8fc",
+  "theme_color": "#f7f8fc",
+  "lang": "fr"
+}
