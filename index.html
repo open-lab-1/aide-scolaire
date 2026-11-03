@@ -33,11 +33,7 @@
           <strong>Un petit pas chaque jour.</strong>
           <p>Des séances courtes et régulières aident à mieux retenir.</p>
         </div>
-        <div class="profile-row">
-          <div class="avatar">É</div>
-          <div><strong>Mon espace</strong><span>Mode aperçu</span></div>
-          <span class="profile-dots">···</span>
-        </div>
+        <div class="profile-row"><div class="avatar" id="profileAvatar">É</div><div class="profile-copy"><strong id="profileName">Mon espace</strong><span id="profileEmail">Non connecté</span></div><button class="profile-action" id="profileAction" title="Se connecter">↗</button></div>
       </div>
     </aside>
 
@@ -46,16 +42,14 @@
         <button class="mobile-menu" id="mobileMenu" aria-label="Ouvrir le menu">☰</button>
         <div class="breadcrumb">Mon espace <span>/</span> <strong id="breadcrumbCurrent">Vue d'ensemble</strong></div>
         <div class="top-actions">
-          <span class="connection-pill"><i></i> Prototype local</span>
-          <button class="icon-button" id="helpButton" aria-label="Informations">?</button>
-          <div class="avatar small-avatar">É</div>
+          <span class="connection-pill" id="connectionStatus"><i></i> Connexion...</span><button class="button button-outline account-button" id="accountButton">Se connecter</button><button class="icon-button" id="helpButton" aria-label="Informations">?</button>
         </div>
       </header>
 
       <section class="view active-view" id="view-dashboard">
         <div class="welcome-row">
           <div>
-            <div class="eyebrow">MARDI 3 NOVEMBRE 2026</div>
+            <div class="eyebrow" id="todayLabel">TON ESPACE PERSONNEL</div>
             <h1>On avance à ton rythme<span class="title-dot">.</span></h1>
             <p class="page-intro">Retrouve tes cours, prépare tes contrôles et organise tes prochaines révisions.</p>
           </div>
@@ -98,7 +92,7 @@
             <div class="focus-empty"><div class="focus-check">✓</div><div><strong>Ton espace est prêt</strong><p>Ajoute un cours et une date de contrôle pour préparer ton programme.</p></div></div>
           </article>
         </div>
-        <div class="notice"><span>ⓘ</span><p><strong>Version de démarrage :</strong> cette interface est déjà interactive, mais la connexion Supabase et la génération par IA seront ajoutées dans les prochaines étapes.</p></div>
+        <div class="notice" id="appNotice"><span>ⓘ</span><p><strong>À savoir :</strong> tes cours et tes examens sont enregistrés dans ton espace privé. Les outils de création de fiches et de quiz arrivent ensuite.</p></div>
       </section>
 
       <section class="view" id="view-courses">
@@ -141,7 +135,7 @@
         <label for="courseSubject">Matière</label><select id="courseSubject" name="subject" required><option value="">Choisir une matière</option><option>Mathématiques</option><option>Français</option><option>Histoire-géographie</option><option>Physique-chimie</option><option>SVT</option><option>Anglais</option><option>Philosophie</option><option>SES</option><option>Spécialité</option><option>Autre</option></select>
         <label>Document du cours</label><label class="upload-zone" for="courseFile"><span class="upload-icon">↑</span><strong>Choisir un fichier</strong><span>PDF, image ou document texte · 20 Mo maximum</span><input id="courseFile" type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.txt,.doc,.docx" required></label>
         <div class="selected-file" id="selectedFile" hidden></div>
-        <div class="form-note">Pour l'instant, le fichier est uniquement sélectionné dans cette démonstration. Il ne sera pas envoyé sur un serveur.</div>
+        <div class="form-note">Ton document sera stocké dans un espace privé. Seul ton compte pourra y accéder.</div>
         <div class="modal-actions"><button type="button" class="button button-outline" data-close>Annuler</button><button type="submit" class="button button-primary">Ajouter à mes cours</button></div>
       </form>
     </div>
@@ -155,12 +149,13 @@
         <label for="examSubject">Matière</label><select id="examSubject" required><option value="">Choisir une matière</option><option>Mathématiques</option><option>Français</option><option>Histoire-géographie</option><option>Physique-chimie</option><option>SVT</option><option>Anglais</option><option>Philosophie</option><option>SES</option><option>Spécialité</option><option>Autre</option></select>
         <label for="examDate">Date de l'examen</label><input id="examDate" type="date" required>
         <label for="examDuration">Temps disponible par jour</label><select id="examDuration"><option value="15">15 minutes</option><option value="30" selected>30 minutes</option><option value="45">45 minutes</option><option value="60">1 heure</option></select>
-        <div class="form-note">La date sera ajoutée à ton planning. Le calcul automatique des séances arrivera avec le moteur de révision.</div>
+        <div class="form-note">La date sera enregistrée dans ton espace. La création automatique des séances sera ajoutée dans une prochaine version.</div>
         <div class="modal-actions"><button type="button" class="button button-outline" data-close>Annuler</button><button type="submit" class="button button-primary">Ajouter l'examen</button></div>
       </form>
     </div>
   </div>
+  <div class="modal-backdrop" id="accountModal" aria-hidden="true"><div class="modal account-modal" role="dialog" aria-modal="true" aria-labelledby="accountTitle"><div class="modal-header"><div><span class="eyebrow">TON ESPACE PERSONNEL</span><h2 id="accountTitle">Content de te retrouver.</h2><p class="modal-subtitle" id="accountSubtitle">Connecte-toi pour retrouver tes cours et ton planning.</p></div><button class="close-button" data-close aria-label="Fermer">×</button></div><div class="auth-tabs"><button type="button" class="auth-tab active" data-auth-mode="signin">Connexion</button><button type="button" class="auth-tab" data-auth-mode="signup">Créer un compte</button></div><form id="accountForm"><label for="accountEmail">Adresse e-mail</label><input id="accountEmail" type="email" autocomplete="email" required maxlength="254" placeholder="toi@exemple.fr"><label for="accountPassword">Mot de passe</label><input id="accountPassword" type="password" autocomplete="current-password" required minlength="8" placeholder="8 caractères minimum"><div class="auth-message" id="authMessage" aria-live="polite"></div><div class="modal-actions"><button type="button" class="button button-outline" data-close>Plus tard</button><button type="submit" class="button button-primary" id="authSubmit">Me connecter</button></div></form><p class="privacy-note">Nous ne demandons que les informations nécessaires au compte. N’utilise pas le mot de passe de ta messagerie.</p></div></div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="./js/app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./js/supabase.js"></script><script src="./js/app.js"></script>
 </body>
 </html>
