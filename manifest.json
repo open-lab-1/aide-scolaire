@@ -1,10 +1,10 @@
 {
-  "name": "Aide Scolaire",
-  "short_name": "Aide Scolaire",
-  "description": "Ton espace intelligent pour organiser tes cours et préparer tes examens.",
+  "name": "Révéo — Révise mieux. Réussis autrement.",
+  "short_name": "Révéo",
+  "description": "Tes cours, fiches, quiz et planning réunis au même endroit.",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#f7f8fc",
-  "theme_color": "#f7f8fc",
+  "background_color": "#f5f7ff",
+  "theme_color": "#f5f7ff",
   "lang": "fr"
 }
