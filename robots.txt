@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://open-lab-1.github.io/aide-scolaire/sitemap.xml
