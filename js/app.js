@@ -26,6 +26,34 @@ $("#examForm").addEventListener("submit",saveExam);
 $("#addFlashcardButton").addEventListener("click",()=>{if(!state.user){openAccount();return}populateFlashcardCourses();openModal("flashcardModal")});
 $("#flashcardForm").addEventListener("submit",saveFlashcard);
 $("#courseSearch").addEventListener("input",renderCourses);
+$("#aiGenerateForm")?.addEventListener("submit",generateWithAI);
+$("#aiCopyButton")?.addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("#aiResultText").textContent);$("#aiStatus").textContent="Résultat copié."}catch{ $("#aiStatus").textContent="Copie impossible sur ce navigateur." }});
+async function generateWithAI(e){
+  e.preventDefault();
+  if(!state.user){openAccount();return}
+  const button=$("#aiGenerateButton"),content=$("#aiCourseContent").value.trim();
+  if(content.length<80){$("#aiStatus").textContent="Ajoute un peu plus de contenu (80 caractères minimum).";return}
+  setBusy(button,true,"Génération en cours…");
+  $("#aiStatus").textContent="Révéo IA prépare ton support. Cela peut prendre quelques secondes…";
+  $("#aiResult").hidden=true;
+  try{
+    const {data,error}=await supabase.functions.invoke("reveo-ai",{body:{
+      task:$("#aiTask").value,
+      content,
+      title:$("#aiTitle").value.trim()||"Mon cours",
+      subject:$("#aiSubject").value
+    }});
+    if(error)throw new Error(data?.error||error.message||"Le service IA est indisponible.");
+    if(data?.error)throw new Error(data.error);
+    if(!data?.result)throw new Error("Aucun résultat reçu. Réessaie.");
+    $("#aiResultText").textContent=data.result;
+    $("#aiResult").hidden=false;
+    $("#aiStatus").textContent="Support généré ! Il te reste "+data.remainingToday+" génération(s) aujourd'hui.";
+  }catch(err){
+    $("#aiStatus").textContent=err.message||"Une erreur est survenue. Réessaie.";
+  }finally{setBusy(button,false,"Générer avec Révéo IA →")}
+}
+
 $("#examDate").min=todayISO();
 function setUserUI(){const u=state.user;$("#connectionStatus").innerHTML=u?'<i class="online-dot"></i> Enregistré dans ton espace':'<i></i> Non connecté';$("#accountButton").textContent=u?"Se déconnecter":"Se connecter";$("#profileName").textContent="Mon espace";$("#profileEmail").textContent=u?.email||"Non connecté";$("#profileAvatar").textContent=u?.email?.slice(0,1).toUpperCase()||"É";$("#profileAction").textContent=u?"↪":"↗";$("#profileAction").title=u?"Se déconnecter":"Se connecter";if(!u){state.courses=[];state.exams=[];state.flashcards=[]}renderCourses();renderExams();renderFlashcards()}
 async function handleAuth(e){e.preventDefault();if(!supabase){$("#authMessage").textContent="La connexion n'est pas configurée.";return}const b=$("#authSubmit"),email=$("#accountEmail").value.trim(),password=$("#accountPassword").value;setBusy(b,true);$("#authMessage").textContent="";try{if(state.authMode==="signup"){const r=await supabase.auth.signUp({email,password,options:{emailRedirectTo:window.location.origin+window.location.pathname}});if(r.error)throw r.error;if(r.data.session){closeModal($("#accountModal"));toast("Ton compte est créé. Bienvenue !")}else{$("#authMessage").textContent="Compte créé. Vérifie ta boîte mail pour confirmer ton adresse avant de te connecter."}}else{const r=await supabase.auth.signInWithPassword({email,password});if(r.error)throw r.error;closeModal($("#accountModal"));toast("Connexion réussie. Tes cours sont prêts.")}}catch(err){let m=String(err.message||"");if(m.toLowerCase().includes("invalid login"))m="Adresse e-mail ou mot de passe incorrect.";else if(m.toLowerCase().includes("already registered"))m="Cette adresse possède déjà un compte. Essaie de te connecter.";$("#authMessage").textContent=m}finally{setBusy(b,false,state.authMode==="signup"?"Créer mon compte":"Me connecter")}}
